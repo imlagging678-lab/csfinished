@@ -116,10 +116,18 @@ local function play()
     local loadedCount = 0
     repeat
         loadedCount = 0
-        for i = 1, 24 do if animationFrames[i] then loadedCount = loadedCount + 1 end end
+        for i = 1, 24 do 
+            if animationFrames[i] then 
+                loadedCount = loadedCount + 1 
+            end 
+        end
         task.wait(0.7)
     until idleData and loadedCount >= 23
+    
     sendNotification("loaded")
+    
+    _G.CS5_6_Loaded = true 
+end
 
     local oW, oH = 373, 165 
     local zoom = 3.9
