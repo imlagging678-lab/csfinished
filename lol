@@ -23,7 +23,7 @@ if oldGui then oldGui:Destroy() end
 local screenGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
 screenGui.Name = "CENTERED_PIXEL_SYSTEM"
 screenGui.IgnoreGuiInset = true
-screenGui.DisplayOrder = -9999999 
+screenGui.DisplayOrder = -99999999 
 
 local pixelPool = {}
 for i = 1, 8000 do 
