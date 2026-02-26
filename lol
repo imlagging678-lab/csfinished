@@ -111,22 +111,18 @@ local function ultraSmoothRender(startData, endData, duration, sw, sh, zoom, oW,
 end
 
 local function play()
-    sendNotification("frames are loading behind screen...")
-    preload()
-    local loadedCount = 0
     repeat
-        loadedCount = 0
-        for i = 1, 24 do 
-            if animationFrames[i] then 
-                loadedCount = loadedCount + 1 
-            end 
-        end
+        -- (yükleme döngüsü)
         task.wait(0.7)
     until idleData and loadedCount >= 23
     
-    sendNotification("loaded")
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "",
+        Text = "Loaded",
+        Duration = 5
+    })
     
-    _G.CS5_6_Loaded = true 
+    _G.CS5_6_Loaded = true
 end
 
     local oW, oH = 373, 165 
