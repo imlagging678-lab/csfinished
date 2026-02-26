@@ -46,7 +46,6 @@ local function preload()
     end
 end
 
-
 local function ultraSmoothRender(startData, endData, duration, sw, sh, zoom, oW, oH, isIdle)
     if not endData or not startData then return end
     
@@ -78,13 +77,10 @@ local function ultraSmoothRender(startData, endData, duration, sw, sh, zoom, oW,
         local alpha = math.clamp(elapsed / duration, 0, 1)
         local curve = math.sin(alpha * (math.pi / 2)) 
 
-
         local offsetX = 0
         local offsetY = 0
         if isIdle then
-            -- X ekseninde hafif sağ-sol (0.8 piksel)
             offsetX = math.cos(tick() * 1.0) * 0.8 
-            -- Y ekseninde yukarı-aşağı (1.5 piksel)
             offsetY = math.sin(tick() * 1.2) * 1.5 
         end
 
@@ -111,19 +107,23 @@ local function ultraSmoothRender(startData, endData, duration, sw, sh, zoom, oW,
 end
 
 local function play()
+    sendNotification("frames are loading behind screen...")
+    preload()
+    
+    local loadedCount = 0
     repeat
-        -- (yükleme döngüsü)
+        loadedCount = 0
+        for i = 1, 24 do 
+            if animationFrames[i] then 
+                loadedCount = loadedCount + 1 
+            end 
+        end
         task.wait(0.7)
     until idleData and loadedCount >= 23
     
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "",
-        Text = "Loaded",
-        Duration = 5
-    })
-    
-    _G.CS5_6_Loaded = true
-end
+    -- BURASI: Notification çıkıyor ve sinyal gönderiliyor
+    sendNotification("Loaded")
+    _G.CS5_6_Loaded = true 
 
     local oW, oH = 373, 165 
     local zoom = 3.9
@@ -132,9 +132,7 @@ end
     while true do
         local sw, sh = Camera.ViewportSize.X, Camera.ViewportSize.Y
         
-
         ultraSmoothRender(lastData, idleData, 0.7, sw, sh, zoom, oW, oH, false)
-        
 
         local idleStart = tick()
         while tick() - idleStart < 10 do
@@ -143,7 +141,6 @@ end
         end
         
         lastData = idleData
-
 
         for i = 1, 24 do
             local nextData = animationFrames[i]
